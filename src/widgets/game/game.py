@@ -59,7 +59,7 @@ class GameCard(MDCard, BorderBehavior):
         dia = MDDialog(title=self.game_obj.name, 
                        text=text,
                        buttons=[
-                           MDRaisedButton(text="Download" if qbt_connected else "Please connect to Qbittorrent to download", on_press=self.download, disabled=not qbt_connected),
+                           MDRaisedButton(text="Download" if qbt_connected else f"Please connect to {self.qbt_client.name} to download", on_press=self.download, disabled=not qbt_connected),
                         ],
                        )
         
@@ -136,7 +136,7 @@ class GameLibraryCard(MDCard, BorderBehavior):
         self.add_widget(self.buttons)
 
         
-        self.disabled_states = ["metaDL", "pausedDL", "queuedDL", "stalledDL", "checkingDL", "forcedDL", "downloading"]
+        self.disabled_states = self.qbt_client.busy_states
         
         self.clock = Clock.schedule_interval(self.update_status, 5)
         
@@ -149,11 +149,13 @@ class GameLibraryCard(MDCard, BorderBehavior):
                 self.manage_dialog.buttons[i].disabled = not connected
             
             if not connected:
-                text = "qBittorrent not connected, please connect ..."
+                text = f"{self.qbt_client.name} not connected, please connect ..."
                 self.manage_dialog.text = text
                 return
             
             self.torr = self.qbt_client.get_torrent(self.magnet)
+            if self.torr is None:
+                return
             
             progress = f"{self.torr.progress*100:.1f}%"
             speed = f"{self.torr.dlspeed//1000} KB/s"
@@ -163,6 +165,9 @@ class GameLibraryCard(MDCard, BorderBehavior):
                     f"Download Progress: {progress}\n" \
                     f"Download Speed: {speed}\n" \
                     f"ETA: {eta}\n"
+            # Real-Debrid downloads keep the reason they failed
+            if getattr(self.torr, "error", None):
+                text += f"Error: {self.torr.error}\n"
                     
             self.manage_dialog.text = text 
             

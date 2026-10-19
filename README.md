@@ -13,10 +13,11 @@ Just download the game and run it! Everything is pre-configured for you, thanks 
 # IMPORTANT
 - Please read [johncena141's guide](https://gitlab.com/jc141x/setup/-/tree/main) to understand more about how their repacks work, and double check the dependencies for their repacks.
 - If you are using a VPN, do not forget to set the network interface in qBittorent to your VPN interface.
+- Instead of qBittorrent you can download through [Real-Debrid](https://real-debrid.com) (premium account required), no torrent client needed.
 
 # Dependencies
 - [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher)
-- Latest qBittorent with WebUI enabled
+- Latest qBittorent with WebUI enabled (not needed when using Real-Debrid)
 - All the dependencies for johncena141's repacks (check their [guide](https://gitlab.com/jc141x/setup/-/blob/main/README.md))
 
 # Installation
@@ -45,6 +46,13 @@ After you run the AppImage, head to the settings tab.
 - Enter your qBittorent WebUI port (default is 8080)
 - Enter your qBittorent WebUI username (default is admin)
 - Enter your qBittorent WebUI password (default is adminadmin)
+
+## Real-Debrid (optional, instead of qBittorrent)
+- Turn on "Use Real-Debrid instead of qBittorrent"
+- Enter your Real-Debrid API token, you can find it [here](https://real-debrid.com/apitoken)
+- Click save and restart UnderTaker141
+
+Games are added to Real-Debrid, downloaded there, then downloaded over HTTPS into your save path. Pause stops the local download and resume continues it, unfinished downloads also continue when you restart the app. Deleting a game also removes it from your Real-Debrid torrents.
 
 ## IGDB
 - Create a Twitch API app and get a client ID and from [here](https://dev.twitch.tv/console/apps/create)

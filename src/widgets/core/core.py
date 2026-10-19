@@ -10,7 +10,7 @@ from kivymd.color_definitions import colors
 from kivymd.toast.kivytoast.kivytoast import toast
 from kivy.clock import Clock
 from widgets.navigation import Rail
-from utils import JCQbt, get_settings, get_latest_release
+from utils import JCQbt, JCRealDebrid, get_settings, get_latest_release
 from .plugin import Plugin, PluginData
 
 from importlib import import_module
@@ -23,11 +23,15 @@ class MainScreen(MDScreen):
         self.version = version
         
         settings = get_settings()
-        self.qbt_client = JCQbt(settings["qbittorrent_api"]["host"],
-                                settings["qbittorrent_api"]["port"],
-                                settings["qbittorrent_api"]["username"],
-                                settings["qbittorrent_api"]["password"],
-                                settings["general"]["save_path"])
+        if settings["general"].get("download_client") == "realdebrid":
+            self.qbt_client = JCRealDebrid(settings.get("realdebrid_api", {}).get("api_token", ""),
+                                           settings["general"]["save_path"])
+        else:
+            self.qbt_client = JCQbt(settings["qbittorrent_api"]["host"],
+                                    settings["qbittorrent_api"]["port"],
+                                    settings["qbittorrent_api"]["username"],
+                                    settings["qbittorrent_api"]["password"],
+                                    settings["general"]["save_path"])
                                 
         
         self.plugins = self.load_plugins()
@@ -135,6 +139,6 @@ class MainScreen(MDScreen):
             self.title_version.text = f"UnderTaker141 {self.version}"
             self.boxlayout2.md_bg_color = colors["BlueGray"]["700"]
         else:
-            self.title_version.text = "Qbittorrent not connected"
+            self.title_version.text = f"{self.qbt_client.name} not connected"
             self.boxlayout2.md_bg_color = colors["Red"]["700"]
             
