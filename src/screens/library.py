@@ -30,7 +30,7 @@ class Library(Plugin):
             
     def load_library(self, instance=None):
         if not self.qbt_client.is_connected():
-            self.gamelist.add_widget(MDRectangleFlatButton(text="Please connect to Qbittorrent to view your library", on_press=self.update_library, size_hint=(None, None), size=(500, 100), pos_hint={"center_x": 0.5, "center_y": 0.5}))
+            self.gamelist.add_widget(MDRectangleFlatButton(text=f"Please connect to {self.qbt_client.name} to view your library", on_press=self.update_library, size_hint=(None, None), size=(500, 100), pos_hint={"center_x": 0.5, "center_y": 0.5}))
             return
         torrs = self.qbt_client.get_torrents()
         for game in torrs:

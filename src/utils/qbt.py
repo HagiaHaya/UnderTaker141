@@ -7,6 +7,11 @@ class JCQbt:
     """
     A class to interact with qBittorrent, specifically for JC141 related downloads.
     """
+    name = "qBittorrent"
+
+    # states during which the game can't be launched yet
+    busy_states = ["metaDL", "pausedDL", "queuedDL", "stalledDL", "checkingDL", "forcedDL", "downloading"]
+
     def __init__(self, host, port, username, password, save_path):
         
         os.system("qbittorrent &")
